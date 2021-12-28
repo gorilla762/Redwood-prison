@@ -1,10 +1,9 @@
---// press b to enable
-
 local Plr = game:GetService("Players").LocalPlayer
+local char = Plr.Character
 local Mouse = Plr:GetMouse()
 local enabled = false
 
-game:GetService("UserInputService").InputBegan:(Connect(function(input, gameProcessed)
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
         enabled = true
     end
@@ -16,18 +15,17 @@ Mouse.Button1Down:connect(function()
     
     s_riotshields.Name = 'StoredRiotShields'
     
+    local riotshield
+    
     local A_1 = "giveRiotShield"
     local A_2 = game:GetService("Workspace").RiotShield
     local Event = game:GetService("Workspace").resources.RemoteFunction
     Event:InvokeServer(A_1, A_2)
-
-    local plr = game.Players.LocalPlayer
-    local char = plr.Character
     
     for i,v in pairs(char:GetChildren()) do
         if v:IsA('Part') and v.Name == 'RiotShield' then
-            v.Anchored = true
-            v.Position = mouse.Hit.p
+            riotshield = v
+            v.CFrame = Mouse.Hit.p
             local D_1 = Instance.new('Decal', v)
             D_1.Texture = '7464536663'
             v.Mesh:Destroy()
@@ -42,6 +40,7 @@ Mouse.Button1Down:connect(function()
     
     for i,v in pairs(char['Left Arm']:GetChildren()) do
         if v:IsA('Weld') then
+            riotshield.Anchored = true
             v:Destroy()
         end
     end
