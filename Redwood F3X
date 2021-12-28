@@ -40,8 +40,8 @@ Mouse.Button1Down:connect(function()
     
     for i,v in pairs(char['Left Arm']:GetChildren()) do
         if v:IsA('Weld') then
-            riotshield.Anchored = true
             v:Destroy()
+            riotshield.Anchored = true
         end
     end
 end)
