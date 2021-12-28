@@ -1,0 +1,48 @@
+--// press b to enable
+
+local Plr = game:GetService("Players").LocalPlayer
+local Mouse = Plr:GetMouse()
+local enabled = false
+
+game:GetService("UserInputService").InputBegan:(Connect(function(input, gameProcessed)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        enabled = true
+    end
+end)
+Mouse.Button1Down:connect(function()
+    if not enabled then return end
+    if not Mouse.Target then return end
+    local s_riotshields = Instance.new('Folder', game.Players.LocalPlayer.Character)
+    
+    s_riotshields.Name = 'StoredRiotShields'
+    
+    local A_1 = "giveRiotShield"
+    local A_2 = game:GetService("Workspace").RiotShield
+    local Event = game:GetService("Workspace").resources.RemoteFunction
+    Event:InvokeServer(A_1, A_2)
+
+    local plr = game.Players.LocalPlayer
+    local char = plr.Character
+    
+    for i,v in pairs(char:GetChildren()) do
+        if v:IsA('Part') and v.Name == 'RiotShield' then
+            v.Anchored = true
+            v.Position = mouse.Hit.p
+            local D_1 = Instance.new('Decal', v)
+            D_1.Texture = '7464536663'
+            v.Mesh:Destroy()
+        
+            v.Parent = s_riotshields
+            --v.ClickDetector:Destroy()
+            char.Humanoid.Died:Connect(function()
+                v:Destroy()
+            end)
+        end
+    end
+    
+    for i,v in pairs(char['Left Arm']:GetChildren()) do
+        if v:IsA('Weld') then
+            v:Destroy()
+        end
+    end
+end)
